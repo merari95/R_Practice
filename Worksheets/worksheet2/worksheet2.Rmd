@@ -35,7 +35,7 @@ In R, all elements of vectors and lists must have the same type. True or false?
 Create an object with a valid logical value corresponding to whether you believe the answer to the question above is `TRUE` or `FALSE`. Bind the name `answer1` to this object.
 
 ```{r tags=c()}
-answer1 <- NULL
+answer1 <- FALSE
 
 answer1
 ```
@@ -51,7 +51,7 @@ rubric={autograde:1}
 Create a vector containing the names of the types of the four most common types of vectors. Bind the name `answer2` to this object.
 
 ```{r tags=c()}
-answer2 <- NULL
+answer2 <- c("logical", "integer", "double", "character")
 
 answer2
 ```
@@ -67,7 +67,7 @@ rubric={autograde:1}
 Create vector containing the following values: 2.2, 15.0, 3.5, 4.0, 30.0 (in the order we list them) and bind the name `values` to it. ***Hint**: The columns function, `c()`, is helpful for constructing vectors.*
 
 ```{r tags=c()}
-values <- NULL
+values <- c(2.2, 15.0, 3.5, 4.0, 30.0)
 
 values
 ```
@@ -83,7 +83,7 @@ rubric={autograde:1}
 Use the `[` syntax to get the first element from the vector `values` and bind the name `values_first` to it.
 
 ```{r tags=c()}
-values_first <- NULL
+values_first <- values[1]
 
 values_first
 ```
@@ -101,7 +101,7 @@ Create a list (not a vector) with the **original** values contained in the `valu
 *Hint: use the `list` function to create a list in R.*
 
 ```{r tags=c()}
-value_list <- NULL
+value_list <- list(2.2, 15.0, 3.5, 4.0, 30.0)
 
 value_list
 ```
@@ -117,7 +117,7 @@ rubric={autograde:1}
 Get the first element from the list and bind the name `value_list_first` to it. Ensure that what you return is a number (**not a list itself**). Remember: When indexing, using `[` gives you the same type of object as the object being indexed (e.g., returns a list when applied to a list), whereas `[[` removes one level of structure (e.g., if the object is a list of numbers, you get the number back itself).
 
 ```{r tags=c()}
-value_list_first <- NULL
+value_list_first <- value_list[[1]]
 
 value_list_first
 ```
@@ -127,13 +127,14 @@ value_list_first
 ```
 
 ### Exercise 7
+
 rubric={autograde:1}
 
 Consider the built-in/base R `CO2` data frame shown below, which contains data from an experiment on carbon dioxide uptake in the grass plant *Echinochloa crus-galli*. Use the `[` syntax to extract rows 1 - 5, and only the columns `conc` and `uptake`. Bind the name `first_five_measurements` to this smaller data frame.
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Echinochloa_crus-galli01.jpg/440px-Echinochloa_crus-galli01.jpg" width=200>
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Echinochloa_crus-galli01.jpg/440px-Echinochloa_crus-galli01.jpg" width="200"/>
 
-*Source: https://en.wikipedia.org/wiki/Echinochloa_crus-galli*
+*Source: <https://en.wikipedia.org/wiki/Echinochloa_crus-galli>*
 
 ```{r}
 # view the first 10 rows
@@ -141,7 +142,8 @@ CO2[1:10, ]
 ```
 
 ```{r tags=c()}
-first_five_measurements <- NULL
+first_five_measurements <- CO2[1:5, c("conc", "uptake")]
+
 
 first_five_measurements
 ```
