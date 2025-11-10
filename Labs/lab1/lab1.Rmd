@@ -214,7 +214,16 @@ with one value in it). Bind the name `mandarin2` to the final object you
 return.
 
 ```{r tags=c()}
-mandarin2 <- NULL
+mandarin2 <- region_lang  |> #here i use the region_lang data set
+  select(region, language, most_at_home) |> #i am selecting only these columns
+  filter(language == 'Mandarin') |> #i filter so that the condition where language is Mandarin is true
+  arrange(desc(most_at_home)) |> #then i order the data so it's from most to least in terms of the "most_at_home" column
+  slice(2) |> #get the second row
+  pull(region) #pull the region value
+
+#effectively getting the region with the region that is second with people speaking Mandarin
+
+
 mandarin2
 ```
 
@@ -245,6 +254,24 @@ autograder to fail for those questions.** **Instead start with the
 are interested in.**
 
 ```{r tags=c()}
+
+toronto_pop <- region_data |>  # i will be using the region_data
+  filter(region == 'Toronto') |> #filter so that region is Toronto
+  pull(population) #extract the population of Toronto
+
+toronto_pop
+
+lang_5 <- region_lang |>       #now i am using region_lang
+  filter(region =='Toronto') |>  #filter so that we are only looking for regions where it's Toronto
+  select(region, language, most_at_home) |> #only select these columns  
+  arrange(desc(most_at_home)) |> #you want to order the data from most to least people in most_at_home column
+  mutate(perc_pop = most_at_home/toronto_pop * 100) |> #create a column called perc_pop 
+  select(language, perc_pop) |> #select only these two columns
+  head(5) #get the first 5 rows
+  #this effectivly gives the 5 most spoken languages at home for the region Toronto with its respective population percentage of the people that speak those languages
+
+lang_5
+
 
 ```
 
