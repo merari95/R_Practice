@@ -106,7 +106,8 @@ rubric={autograde:1}
 Use the {dplyr} `filter()` function to create a smaller data frame (from the `penguins_csv` data frame) with just the rows for female penguins. Bind the name `female_penguins` to this smaller data frame.
 
 ```{r tags=c()}
-female_penguins <- NULL
+female_penguins <- penguins_csv |> 
+  filter(sex == 'female')
 head(female_penguins)
 ```
 
@@ -121,7 +122,8 @@ rubric={autograde:1}
 Use the {dplyr} `arrange()` function to find the smallest penguin (as measured by `body_mass_g`) in the `penguins_csv` data frame. Bind the name `ordered_by_size` to this smaller data frame.
 
 ```{r tags=c()}
-ordered_by_size <- NULL
+ordered_by_size <- penguins_csv |> 
+  arrange(body_mass_g)
 head(ordered_by_size)
 ```
 
@@ -136,7 +138,8 @@ rubric={autograde:1}
 Now use the {dplyr} `slice()` function to extract the row containing the smallest penguin (as measured by `body_mass_g`) from the `ordered_by_size` data frame. Bind the name `smallest_penguin` to this smaller data frame.
 
 ```{r tags=c()}
-smallest_penguin <- NULL
+smallest_penguin <- ordered_by_size |> 
+  slice(1)
 smallest_penguin
 ```
 
@@ -208,7 +211,11 @@ flight_untidy2
 ```
 
 ```{r tags=c()}
-flight_tidy2 <- NULL
+flight_tidy2 <- flight_untidy2 |> #here we are using the flight_untidy dataframe 
+  pivot_wider(names_from = event, values_from = time) |> #we are doing a pivot wider to have one row per observation, thereby making it tidy
+  mutate(duration = arrival - departure) |> #here we are making a new column called "duration" which is derived from subtracting arrival and departure
+  select(airline, date, flight, duration) #then finally only these 4 columns are selected
+  
 flight_tidy2
 ```
 
