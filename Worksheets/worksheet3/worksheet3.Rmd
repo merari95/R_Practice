@@ -123,7 +123,14 @@ Using the interval from exercise 3, `filter` the data set below to return just t
 A couple hints: - the `holiday_date` column should be converted to the class "Date" - `%within%` is useful for pairing with `filter` to get rows in an interval
 
 ```{r tags=c()}
-mds_stat_holidays_2024_25 <- NULL
+
+canada <- read_csv("data/canada_2024-25.csv", skip = 2) #here i am reading the canada_2024-25.csv file and skipping the first 2 rows because it doesnt contain any data. the variable contains a dataset of Canada's holidays
+canada
+
+mds_stat_holidays_2024_25 <- canada |> #i am calling the same canada variable
+  mutate(holiday_date = ymd(holiday_date)) |> #i am mutating the holiday_date column but parsing it to proper date format
+  filter(holiday_date %within% mds_2024_2025) #i am only keeping the holidays that fall in the mds interval
+
 mds_stat_holidays_2024_25
 ```
 
