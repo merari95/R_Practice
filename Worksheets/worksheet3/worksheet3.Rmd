@@ -162,9 +162,11 @@ data_frame %>%
 Your task here is to use `filter` + `str_detect` to obtain rows for the region containing Canada's capital city: "Ottawa"(the `region` column of `region_lang` data frame). Bind the name `ottawa_region` to the data frame.
 
 ```{r tags=c()}
-ottawa_region <- NULL
 
-ottawa_region
+ottawa_region <- region_lang |> #here i am calling the region_lang
+  filter(str_detect(region, "Ottawa")) #i am filtering for rows that have "Ottawa" in their region column, using str_detect function
+
+ottawa_region #leaving only rows with region Ottawa
 ```
 
 ```{r}
@@ -185,7 +187,9 @@ data_frame %>%
 Your task here is to use `mutate` + `str_replace` to replace all the `-`'s with `&`'s in the `region` column of `region_lang` data frame. Bind the name `replaced_dash` to the data frame.
 
 ```{r tags=c()}
-replaced_dash <- NULL
+
+replaced_dash <- region_lang |> # i am calling the region_lang dataset
+  mutate(region = str_replace(region, "-", "&")) #here i am replacing hypens with ampersands in the region column
 
 replaced_dash
 ```
@@ -209,12 +213,16 @@ rubric={autograde:1}
 Convert the `tzone` column in the `airports` data set into a factor. Bind the name `airports_factor` to this data frame. Use the `levels` function to get the levels of the `tzone` column. Store these in a vector named `tzone_levels`.
 
 ```{r tags=c()}
-airports_factor <- NULL
 
-tzone_levels <- NULL
 
-head(airports_factor)
-tzone_levels
+airports_factor <- airports |>  #im using airports dataset
+  mutate(tzone = as_factor(tzone)) #convert the tzone column into a factor. a factor are categories with assigned levels
+
+
+tzone_levels<-levels(airports_factor$tzone) #i am getting the levels from the tzone column
+
+head(airports_factor) #shows the first 6 rows of the dataset
+tzone_levels #prints the tzone_levels
 ```
 
 ```{r}
