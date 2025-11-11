@@ -86,7 +86,7 @@ add them yourself programmatically via R** (see `col_names` arguement of
 the `read_*` functions).
 
 | File | Object name to bind to the data frame | File location |
-|----------------------|----------------------|-----------------------------|
+|----|----|----|
 | `abbotsford_lang.xlsx` | `abbotsford` | `data` directory of this repo |
 | `calgary_lang.csv` | `calgary` | `data` directory of this repo |
 | `edmonton_lang.xlsx` | `edmonton` | <https://github.com/ttimbers/canlang/blob/master/inst/extdata/edmonton_lang.xlsx?raw=true> |
