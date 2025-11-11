@@ -303,7 +303,8 @@ Bind the name `tidy_temps` to the tidy data frame you create. Name the
 second column name to be `month` & third column name to be `temp`.
 
 ```{r tags=c()}
-tidy_temps <- NULL
+tidy_temps <- read_csv('data/departure_bay_temperature.csv', skip =2) |> #here i am reading the csv file with read_csv function and skipping the first 2 rows because it doesn't contain any relevant information
+  pivot_longer(`Jan`:`Dec`, names_to = "month", values_to = 'temp') #i am performing a pivot longer because the data set is too wide and not tidy, thereby creating the month column and temperature column
 tidy_temps
 ```
 
@@ -351,7 +352,8 @@ will have to do, and then get to work and tidy it! Bind the name
 Data source: <https://www.jvcasillas.com/untidydata/>
 
 ```{r tags=c()}
-tidy_lang <- NULL
+tidy_lang <- read_delim('data/language_diversity.csv', delim = '\t') |> #here we are reading in the file which has a delimiter of \t
+  pivot_wider(names_from = "Measurement", values_from = "Value" ) #here we are using the pivot_wider function to transform the dataset from long to wide, thereby making our dataset tidy
 head(tidy_lang)
 ```
 
