@@ -141,10 +141,11 @@ Calculate the mean body mass and mean flipper length for each sex of the Gentoo 
 ```{r tags=c()}
 gentoo_sex_size <- penguins |> #using penguins data to create gentoo_sex_size variable
   filter(species == 'Gentoo') |> #filtering by the the penguins species type Gento
+    drop_na(sex) |>  #get rid of any NA values that dont belong to any sex group
   group_by(sex) |> #grouping by penguin sex (F/M)
   summarize(mean_body_mass_g = mean(body_mass_g, na.rm = TRUE), #summarize the mean body_mass_g and mean flipper_length_mm per sex group
-            mean_flipper_length_mm = mean(flipper_length_mm, na.rm = TRUE)) |> 
-  drop_na() #get rid of any NA values that dont belong to any sex group
+            mean_flipper_length_mm = mean(flipper_length_mm, na.rm = TRUE))
+
   
 
 gentoo_sex_size
@@ -180,7 +181,7 @@ for (i in seq_along(pottery)) {
 }
 pottery_sd_loop
 
-pottery_sd_purrr <- NULL
+pottery_sd_purrr <- map_df(pottery, sd)
 
 pottery_sd_purrr 
 ```
