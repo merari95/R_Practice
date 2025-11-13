@@ -25,14 +25,17 @@ library(digest)
 ```
 
 ### Exercise 1
+
 rubric={autograde:1}
 
-Write a function called `mpg_to_kml` that takes a vector of numbers in miles per gallon units and converts it to a vector in kilometeres per litre.
+Write a function called `mpg_to_kml` that takes a vector of numbers in miles per gallon units and converts it to a vector in kilometeres per litre.››\$
 
 *Hint: 1 mile per gallon is 0.425144 kilometres per litre.*
 
 ```{r tags=c()}
-mpg_to_kml <- NULL
+mpg_to_kml <- function(x){ # i am creating a function that converts mpg to kml by multiplying mpg to 0.425144 to convert to mpg
+  x*0.425144
+}
 
 mpg_to_kml(1)
 ```
@@ -49,22 +52,23 @@ Write **at least** two {testthat} `expect_equal` tests inside of an `test_that` 
 
 *Hint: test edge cases that you can compute by hand, and be sure of your answer!*
 
-<img src="img/unit-tests.png" width=350>
+<img src="img/unit-tests.png" width="350"/>
 
-*Source: Austin Powers + http://www.quickmeme.com/meme/3ua14n*
+*Source: Austin Powers + <http://www.quickmeme.com/meme/3ua14n>*
 
 ```{r tags=c()}
 # YOUR CODE HERE
 ```
 
 ### Exercise 3
+
 rubric={autograde:1}
 
 Add exceptions to your `mpg_to_kml` function so that you can handle inappropriate user input, such as character vectors, lists or data frames.
 
-<img src="img/fail-you-will-fail-fast-you-should.jpg" width=300>
+<img src="img/fail-you-will-fail-fast-you-should.jpg" width="300"/>
 
-*Source: Star Wars + https://memegenerator.net/*
+*Source: Star Wars + <https://memegenerator.net/>*
 
 ```{r tags=c()}
 # YOUR CODE HERE
@@ -95,25 +99,26 @@ Now write {roxygen2} style documentation for your function!
 ```
 
 ### Exercise 6
+
 rubric={autograde:1}
 
 Go on an R package scavengeR hunt! Explore one of the [`stringr` R package on GitHub](https://github.com/tidyverse/stringr) to do the following question:
 
 Create a list that has the following four elements in the order listed below:
 
-1. The relative path (from the project root) to the file containing the `str_replace` function (as a character vector).
+1.  The relative path (from the project root) to the file containing the `str_replace` function (as a character vector).
 
-2. The line number of the start of the `str_replace` function definition (not including the Roxygen2 comments) (as a numeric vector).
+2.  The line number of the start of the `str_replace` function definition (not including the Roxygen2 comments) (as a numeric vector).
 
-3. The relative path (from the project root) to the file containing the tests for the `str_replace` function (as a character vector).
+3.  The relative path (from the project root) to the file containing the tests for the `str_replace` function (as a character vector).
 
-4. The line number of the start of the first test of the `str_replace` function (as a numeric vector).
+4.  The line number of the start of the first test of the `str_replace` function (as a numeric vector).
 
 Bind the name `str_replace_metadata` to this list.
 
-<img src="https://media.giphy.com/media/PjxWpnShj8mAS2qYAK/giphy-downsized.gif">
+<img src="https://media.giphy.com/media/PjxWpnShj8mAS2qYAK/giphy-downsized.gif"/>
 
-*Source: The Big Bang Theory + https://giphy.com/*
+*Source: The Big Bang Theory + <https://giphy.com/>*
 
 ```{r tags=c()}
 str_replace_metadata <- NULL
@@ -129,38 +134,38 @@ Congratulations! You are done the worksheet!!! Pat yourself on the back, and sub
 
 > ### Exercise 2 solution
 >
->```
->test_that('1 mile per gallon is should be 0.425144 kilometres per litre', {
+> ```         
+> test_that('1 mile per gallon is should be 0.425144 kilometres per litre', {
 >    expect_equal(mpg_to_kml(1), 0.425144)
 >    expect_equal(mpg_to_kml(2), 0.850288)
 >    expect_equal(mpg_to_kml(10), 4.25144)
->})
->```
+> })
+> ```
 
 > ### Exercise 4 solution
 >
->```
->test_that('errors should be thrown when non-numeric vectors, lists or data frames are given to the function', {
+> ```         
+> test_that('errors should be thrown when non-numeric vectors, lists or data frames are given to the function', {
 >    expect_error(mpg_to_kml("A"))
 >    expect_error(mpg_to_kml(list(1, 2)))
 >    expect_error(mpg_to_kml(data.frame(x = c(1))))
->})
->```
+> })
+> ```
 
->### Exercise 5 solution
+> ### Exercise 5 solution
 >
 > Roxygen2 comments only:
 >
->```
->#' Miles per gallon to kilometres per litre
->#'
->#' Convert a fuel efficiency from miles per gallon to kilometres per litre.
->#'
->#' @param x numeric
->#'
->#' @return numeric
->#' @export
->#'
->#' @examples
->#' mpg_to_kml(1)
->```
+> ```         
+> #' Miles per gallon to kilometres per litre
+> #'
+> #' Convert a fuel efficiency from miles per gallon to kilometres per litre.
+> #'
+> #' @param x numeric
+> #'
+> #' @return numeric
+> #' @export
+> #'
+> #' @examples
+> #' mpg_to_kml(1)
+> ```
