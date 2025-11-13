@@ -411,9 +411,9 @@ date <- list("2020-09-13", "2020-09-12", "2020-09-11",
 
 #LEFT OFF EXPLAINING THESE STEPS!!!!!!
 
-library(lubridate)
+library(lubridate) #here i am loading the lubridate paclage
 
-aqi  <- c(165,179,199,136,91,121,161,78,84,80,73,55,57,55,55,55,62,68)
+aqi  <- c(165,179,199,136,91,121,161,78,84,80,73,55,57,55,55,55,62,68) #here is the aqi list
 
 # Make this a character vector, not a list:
 date_chr <- c("2020-09-13","2020-09-12","2020-09-11","2020-09-10","2020-09-09",
@@ -421,25 +421,24 @@ date_chr <- c("2020-09-13","2020-09-12","2020-09-11","2020-09-10","2020-09-09",
               "2020-09-03","2020-09-02","2020-09-01","2020-08-31","2020-08-30",
               "2020-08-29","2020-08-28","2020-08-27")
 
-dates <- ymd(date_chr)  
+#here is a vector date_chr
+
+dates <- ymd(date_chr)  #here i am transforming the entries in date_chr to date class with the ymd function from lubridate
 #class(dates)          # "Date"
 
-after_fire  <- interval(ymd("2020-09-05"), ymd("2020-09-13"))
+after_fire  <- interval(ymd("2020-09-05"), ymd("2020-09-13")) #defining the intervals for after and before the fire, respectively
 before_fire <- interval(ymd("2020-08-27"), ymd("2020-09-04"))
 
 
 
 # --- Vectorized version (simpler) ---
 
-after_fire_avg  <- mean(aqi[dates %within% after_fire])
-before_fire_avg <- mean(aqi[dates %within% before_fire])
+after_fire_avg  <- mean(aqi[dates %within% after_fire]) #here i am getting the mean of the aqi entries that are within the after fire interval
+before_fire_avg <- mean(aqi[dates %within% before_fire]) #here i am getting the mean of the aqi entries that are within the before fire interval
 
 after_fire_avg 
 before_fire_avg
 
-
-after_fire_aqi
-before_fire_aqi
 ```
 
 ## Exercise 6: CHALLENGING
@@ -465,11 +464,30 @@ table. You must write your question of interest in 1-2 sentences of
 written English, as well as explain your results in 1-2 sentences in
 written English to obtain full marks.
 
-*Type your answer here, replacing this text.*
+What are the top 10 regions in Canada which report a given language
+(Spanish) as their mother tongue, measured by the percentage of people
+in that region .
 
 ```{r tags=c()}
+library(canlang)
 
+region_lang #loaded region_lang dataset
+region_data #loaded region_data dataset
+
+region_lang_data <- region_lang |> 
+  full_join(region_data) |> #doing a full join with region_lang and region_data
+  filter(language == 'Spanish') |>  #filtering for the language that is Spanish
+  select(region, language, mother_tongue, population) |> #select relevant columns
+  arrange(desc(mother_tongue)) |> #arrange the data so that regions with the highest mother_tongue is Spanish, those will be on top
+  head(10) |> #only show the top 10 spanish speakers (mother_tongue)
+  mutate(lang_perc = mother_tongue / population *100) #calculate the percentage of Spanish mother_tongue speakers per region compared to their total population
+  
+region_lang_data
 ```
+
+Toronto has the highest Spanish mother_tongue speakers by language
+percentage (2.13%) and Quebec has the lowest Spanish mother_tongue
+speakers by language percentage (0.91%)
 
 Congratulations! You are done the lab!!! Pat yourself on the back, and
 submit your lab to **GitHub** and Gradescope! Make sure you have 3 Git
