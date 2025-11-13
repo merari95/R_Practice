@@ -478,16 +478,18 @@ region_lang_data <- region_lang |>
   full_join(region_data) |> #doing a full join with region_lang and region_data
   filter(language == 'Spanish') |>  #filtering for the language that is Spanish
   select(region, language, mother_tongue, population) |> #select relevant columns
-  arrange(desc(mother_tongue)) |> #arrange the data so that regions with the highest mother_tongue is Spanish, those will be on top
-  head(10) |> #only show the top 10 spanish speakers (mother_tongue)
-  mutate(lang_perc = mother_tongue / population *100) #calculate the percentage of Spanish mother_tongue speakers per region compared to their total population
+  mutate(lang_perc = mother_tongue / population *100) |>  #calculate the percentage of Spanish mother_tongue speakers per region compared to their total population
+  arrange(desc(lang_perc)) |> #arrange the data so that regions with the highest mother_tongue is Spanish, those will be on top
+  head(10) #only show the top 10 spanish speakers (mother_tongue) by lang_perc
+
   
 region_lang_data
 ```
 
-Toronto has the highest Spanish mother_tongue speakers by language
-percentage (2.13%) and Quebec has the lowest Spanish mother_tongue
-speakers by language percentage (0.91%)
+Among Canadian regions, **Montréal** has the highest percentage of
+residents who report Spanish as their mother tongue (about **2.95%**),
+while **Sherbrooke** has the lowest percentage among the top ten regions
+(about **1.31%**).
 
 Congratulations! You are done the lab!!! Pat yourself on the back, and
 submit your lab to **GitHub** and Gradescope! Make sure you have 3 Git
