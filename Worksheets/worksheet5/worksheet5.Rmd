@@ -32,9 +32,10 @@ library(digest)
 ```
 
 ### Exercise 1
+
 rubric={autograde:1}
 
-<img src="img/dplyr_case_when.png" width=500>
+<img src="img/dplyr_case_when.png" width="500"/>
 
 *Illustration by Allison Horst*
 
@@ -53,7 +54,15 @@ fix_me <- tribble(
   "SK",                  "Saskatoon"
 )
 
-fixed <- NULL
+fix_me
+fixed <- fix_me |>  
+  mutate(province = #fixed the tibble to only include acronyms of the cities
+    case_when(
+      province == "British Columbia" ~ "BC", 
+      province == "Alberta" ~ "AB", 
+      TRUE ~ province #if cities are already in acronym, don't change
+      )
+  )
 
 fixed
 ```
@@ -63,12 +72,14 @@ fixed
 ```
 
 ### Exercise 2
+
 rubric={autograde:1}
 
 Use the {tidyr} `drop_na` function to drop the rows in the {palmerpenguins} `penguins` data set that have NA's in the `body_mass_g` column. Bind the name `penguins_less_nas` to tibble you create.
 
 ```{r tags=c()}
-penguins_less_nas <- NULL
+penguins_less_nas <- penguins |> 
+  drop_na(body_mass_g) #using tidyr's drop_na function to drop any NA values in teh body_mass_g column
 
 penguins_less_nas
 ```
@@ -78,12 +89,13 @@ penguins_less_nas
 ```
 
 ### Exercise 3
+
 rubric={autograde:1}
 
 Use the {tidyr} `drop_na` function to drop **all** the rows in the {palmerpenguins} `penguins` data set that have NA's in any column. Bind the name `penguins_no_nas` to tibble you create.
 
 ```{r tags=c()}
-penguins_no_nas <- NULL
+penguins_no_nas <- drop_na(penguins) #here i am dropping all the NA values in the entire dataset 
 
 penguins_no_nas
 ```
@@ -93,20 +105,23 @@ penguins_no_nas
 ```
 
 ### Exercise 4
+
 rubric={autograde:1}
 
-<img src="img/group_by_ungroup.png" width=400>
+<img src="img/group_by_ungroup.png" width="400"/>
 
 *Illustration by Allison Horst*
 
-Working with the {nycflights13} `planes` data set, calculate the average number of seats for planes 
-categorized by their `engine` type (do not use the `type` column).
-Also count the number of planes for each `engine` type. Return the results together in one tibble, and name the columns `avg_seats` and `planes`. Bind the name `engine_summary` to this tibble.
+Working with the {nycflights13} `planes` data set, calculate the average number of seats for planes categorized by their `engine` type (do not use the `type` column). Also count the number of planes for each `engine` type. Return the results together in one tibble, and name the columns `avg_seats` and `planes`. Bind the name `engine_summary` to this tibble.
 
-*Hint: the {dply} function `n()` (with no arguements) will be useful to count the number of planes for each engine type.
+\*Hint: the {dply} function `n()` (with no arguements) will be useful to count the number of planes for each engine type.
 
 ```{r tags=c()}
-engine_summary <- NULL
+engine_summary <- planes |> 
+  group_by(engine) |> #group the dataset by engine typye
+  summarize(avg_seats = mean(seats, na.rm = TRUE), #get the average number of seats per engine type and ignore the NA values
+            planes = n() #count the number of instances of an engine type which is equal the total number of planes per engine
+            )
 
 engine_summary
 ```
@@ -119,12 +134,18 @@ engine_summary
 
 *Solution posted at end of worksheet.*
 
-Calculate the mean body mass and mean flipper length for each sex of the Gentoo penguins species in the {palmerpenguins} `penguins` data set. Name the columns you create `mean_body_mass_g` and `mean_flipper_length_mm`.  Bind the name `gentoo_sex_size` to the tibble you create.
+Calculate the mean body mass and mean flipper length for each sex of the Gentoo penguins species in the {palmerpenguins} `penguins` data set. Name the columns you create `mean_body_mass_g` and `mean_flipper_length_mm`. Bind the name `gentoo_sex_size` to the tibble you create.
 
 *Hint: return only the data for female and male penguins, you may need to use `drop_na` to do this.*
 
 ```{r tags=c()}
-gentoo_sex_size <- NULL
+gentoo_sex_size <- penguins |> #using penguins data to create gentoo_sex_size variable
+  filter(species == 'Gentoo') |> #filtering by the the penguins species type Gento
+  group_by(sex) |> #grouping by penguin sex (F/M)
+  summarize(mean_body_mass_g = mean(body_mass_g, na.rm = TRUE), #summarize the mean body_mass_g and mean flipper_length_mm per sex group
+            mean_flipper_length_mm = mean(flipper_length_mm, na.rm = TRUE)) |> 
+  drop_na() #get rid of any NA values that dont belong to any sex group
+  
 
 gentoo_sex_size
 ```
@@ -137,11 +158,11 @@ gentoo_sex_size
 
 *Solution posted at end of worksheet.*
 
-<img src="img/purrr_cat.png" width=300>
+<img src="img/purrr_cat.png" width="300"/>
 
 *Illustration by Allison Horst*
 
-Re-write the for loop in base R code shown below (which calculates the standard deviation for the chemical columns in the `Pottery.csv` data set located at https://vincentarelbundock.github.io/Rdatasets/csv/carData/Pottery.csv) using an {purrr} `map_*` function such that you get equal output values, but so that the `map_*` function returns a data frame instead of a vector. Bind the name `pottery_sd_purrr` to the tibble you create.
+Re-write the for loop in base R code shown below (which calculates the standard deviation for the chemical columns in the `Pottery.csv` data set located at <https://vincentarelbundock.github.io/Rdatasets/csv/carData/Pottery.csv>) using an {purrr} `map_*` function such that you get equal output values, but so that the `map_*` function returns a data frame instead of a vector. Bind the name `pottery_sd_purrr` to the tibble you create.
 
 This data set contains measurements of chemicals found in ancient pottery from four locations in Great Britain.
 
@@ -166,9 +187,9 @@ pottery_sd_purrr
 
 Congratulations! You are done the worksheet!!! Pat yourself on the back, and submit your worksheet to Gradescope!
 
-###  Exercise 5 Solution
+### Exercise 5 Solution
 
-```
+```         
 gentoo_sex_size <- penguins %>% 
     filter(species == "Gentoo") %>%
     drop_na(sex) %>%
@@ -177,8 +198,8 @@ gentoo_sex_size <- penguins %>%
              mean_flipper_length_mm = mean(flipper_length_mm, na.rm = TRUE))
 ```
 
-###  Exercise 6 Solution
+### Exercise 6 Solution
 
-```
+```         
 pottery_sd_purrr <- map_df(pottery, sd)
 ```
