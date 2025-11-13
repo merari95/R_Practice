@@ -33,11 +33,22 @@ Write a function called `mpg_to_kml` that takes a vector of numbers in miles per
 *Hint: 1 mile per gallon is 0.425144 kilometres per litre.*
 
 ```{r tags=c()}
-mpg_to_kml <- function(x){ # i am creating a function that converts mpg to kml by multiplying mpg to 0.425144 to convert to mpg
-  x*0.425144
-}
+mpg_to_kml <- function(x) {
+   #this is the mpg_to_kml function that converts mpg to kml, if the input is not numeric, if it's a dataframe or a list, then an error will be thrown out respectively.
+  
+    # must not be data frame or list
+  if (is.data.frame(x) || is.list(x)) {
+    stop("Input cannot be a data frame or list.")
+  }
+  
+  # must be numeric
+  if (!is.numeric(x)) {
+    stop("Input must be numeric.")
+  }
+  
 
-mpg_to_kml(1)
+  return(x * 0.425144)
+}
 ```
 
 ```{r}
@@ -57,7 +68,15 @@ Write **at least** two {testthat} `expect_equal` tests inside of an `test_that` 
 *Source: Austin Powers + <http://www.quickmeme.com/meme/3ua14n>*
 
 ```{r tags=c()}
-# YOUR CODE HERE
+test_that("Output is equal to 0.425144 when input is 1 ", {
+  
+   expect_equal(mpg_to_kml(1), 0.425144)
+  expect_equal(mpg_to_kml(10), 4.25144)
+  expect_equal(mpg_to_kml(0), 0)
+  
+})
+
+#here i am testing that my function mpg_to_kml correctly converts pmg to kml by testing different input/outputs 
 ```
 
 ### Exercise 3
@@ -71,7 +90,10 @@ Add exceptions to your `mpg_to_kml` function so that you can handle inappropriat
 *Source: Star Wars + <https://memegenerator.net/>*
 
 ```{r tags=c()}
-# YOUR CODE HERE
+test_that("Non-numeric values for input should throw an error",{
+  expect_error(mpg_to_kml('hi'))
+            }
+          )
 ```
 
 ```{r}
@@ -85,7 +107,14 @@ Add exceptions to your `mpg_to_kml` function so that you can handle inappropriat
 Now write **at least** two {testthat} `expect_error` tests inside of an `test_that` statement to ensure that your function works as expected (i.e., does your function throw errors when incorrect inputs are given?).
 
 ```{r tags=c()}
-# YOUR CODE HERE
+test_that("Invalid inputs should throw an error", {
+  expect_error(mpg_to_kml("hi"))
+  expect_error(mpg_to_kml(data.frame(x = 1)))
+})
+```
+
+```{r}
+mpg_to_kml(data.frame(x = 1))
 ```
 
 ### Exercise 5 (not graded)
@@ -95,7 +124,40 @@ Now write **at least** two {testthat} `expect_error` tests inside of an `test_th
 Now write {roxygen2} style documentation for your function!
 
 ```{r tags=c()}
-# YOUR CODE HERE
+#' Convert miles per gallon (mpg) to kilometers per liter (km/L)
+#'
+#' This function converts fuel efficiency from miles per gallon (mpg) 
+#' to kilometers per liter (km/L) using the conversion factor 1 mpg = 0.425144 km/L.
+#' It includes error handling to ensure that the input is numeric, and is not 
+#' a data frame or a list.
+#'
+#' @param x A numeric value or numeric vector representing miles per gallon.
+#'
+#' @return A numeric value or numeric vector representing fuel efficiency 
+#' in kilometers per liter.
+#'
+#' @examples
+#' mpg_to_kml(1)
+#' mpg_to_kml(c(10, 20))
+#'
+#' @export
+
+
+mpg_to_kml <- function(x) {
+
+  # first check for data frame or list
+  if (is.data.frame(x) || is.list(x)) {
+    stop("Input cannot be a data frame or list.")
+  }
+
+  # then check if numeric
+  if (!is.numeric(x)) {
+    stop("Input must be numeric.")
+  }
+
+  return(x * 0.425144)
+}
+
 ```
 
 ### Exercise 6
@@ -121,7 +183,8 @@ Bind the name `str_replace_metadata` to this list.
 *Source: The Big Bang Theory + <https://giphy.com/>*
 
 ```{r tags=c()}
-str_replace_metadata <- NULL
+path <- '/tests/e6.R'
+str_replace_metadata <- list(path, 10 )
 
 str_replace_metadata
 ```
