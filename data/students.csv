@@ -1,0 +1,9 @@
+School Name,Grade Level,Gender,Ethnic.Code,Test Score,Attendance Rate,School_Code
+Lincoln Elem,3,Female,HISP,78,0.95,1
+Lincoln Elem,3,Male,Hisp,,0.9,1
+lincoln elem,4,FEMALE,WHITE,85,0.97,1
+Lincoln Elem,4,male,Asian,88,0.98,1
+Washington,3,Female,Hispanic,80,0.96,2
+Washington,5,M,White,70,0.89,2
+Washington,5,Female,ASIAN,92,0.99,2
+Washington,4,Male,Hisp,75,,2

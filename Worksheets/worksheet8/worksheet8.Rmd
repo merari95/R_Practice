@@ -32,11 +32,12 @@ library(digest)
 ```
 
 ### Exercise 1
+
 rubric={autograde:1}
 
 The `get_rectangle` function shown below does not work for unquoted column names. Use the `{{` operator to embrace the column names/user inputs given by the user so that the function works as described:
 
-```
+```         
 #' Get smaller rectangle from a bigger data frame
 #' 
 #' `get_rectangle` subsets a data frame using filter and select syntax.
@@ -62,7 +63,13 @@ get_rectangle <- function(data, row_filter, column_range = everything()) {
 *Hint: embracing works for more than just a column name - you can even embrace a variable that will hold a filter logical statement (e.g., `body_mass_g > 3000`).*
 
 ```{r tags=c()}
-# YOUR CORRECTED CODE HERE
+
+get_rectangle <- function(data, row_filter, column_range = everything()) {
+  data |>
+    filter({{ row_filter }}) |>
+    select({{ column_range }})
+}
+
 
 get_rectangle(penguins, body_mass_g > 3000, species:island)
 ```
@@ -72,9 +79,10 @@ get_rectangle(penguins, body_mass_g > 3000, species:island)
 ```
 
 ### Exercise 2
+
 rubric={autograde:1}
 
-Why do we need to embrace the columns with `{{` (or do something else that is equivalent) when writing functions %>% that wrap {tidyverse} functions when we want to pass unquoted column names in as function arguments? Choose all answers listed below that you think are correct:
+Why do we need to embrace the columns with `{{` (or do something else that is equivalent) when writing functions %\>% that wrap {tidyverse} functions when we want to pass unquoted column names in as function arguments? Choose all answers listed below that you think are correct:
 
 A. R performs lazy, not eager, evaluation of function arguments
 
@@ -87,7 +95,7 @@ D. `{{` quotes the column names, and then unquotes and evaluates them inside the
 Create a character vector of the answers above you think are correct, for example, `c("E", "F")`. Bind the name `answer_2` to this vector.
 
 ```{r tags=c()}
-answer_2 <- NULL
+answer_2 <- c('B','D')
 answer_2
 ```
 
@@ -96,11 +104,12 @@ answer_2
 ```
 
 ### Exercise 3
+
 rubric={autograde:1}
 
 The `nest_and_count function` shown below does not work. Your task is to identify why and fix it so that the function works as described:
 
-```
+```         
 #' Nest data and count observations in each group
 #'
 #' @param data A data frame
@@ -134,6 +143,7 @@ nest_and_count(penguins, species, n) |> print()
 ```
 
 ### Exercise 4
+
 rubric={autograde:1}
 
 Take the function you fixed in exercise 1 and **rename it** `get_rectangle2`. Now make it work better with select syntax by added pass the dots, `...`, in place of `column_range`. When you do this, play with inputs to this function, what can you do with `...` as opposed to using a named argument? *Hint: try selecting columns that are not beside each other.* What can't you do? *Hint: think about function argument defaults.*
@@ -149,11 +159,12 @@ get_rectangle2(penguins, body_mass_g > 3000, species:island)
 ```
 
 ### Exercise 5
+
 rubric={autograde:1}
 
 Write a function called `select_and_arrange` whose documentation we provide below. This function should use embracing with `{{` and pass the dots `...` syntax to accomplish it's job.
 
-```
+```         
 #' Select and arrange
 #'
 #' @param data A data frame
@@ -179,9 +190,10 @@ select_and_arrange <- NULL
 ```
 
 ### Exercise 6
+
 rubric={autograde:1}
 
-This is your last worksheet question for this course! Congrats! This one is a choose your own adventure. Write any function that takes a data frame, and an quoted column name. Use either `{{` or `..` (or both!) to deal with the unquoted column name(s). All you need to do is make sure it works. Be creative! 
+This is your last worksheet question for this course! Congrats! This one is a choose your own adventure. Write any function that takes a data frame, and an quoted column name. Use either `{{` or `..` (or both!) to deal with the unquoted column name(s). All you need to do is make sure it works. Be creative!
 
 We provide a function name so we can test that you used `{{` or `..`. Feel free to add whatever else you want to it, just don't change the `have_fun` function name.
 

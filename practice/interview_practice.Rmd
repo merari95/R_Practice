@@ -1,0 +1,131 @@
+---
+title: "ggplot_practice"
+output: html_document
+date: "2025-11-16"
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(janitor)
+library(dplyr)
+library(ggplot2)
+```
+
+## R Markdown
+
+# **mpg dataset (ggplot2)**
+
+Great for: bar charts, scatterplots, facets, trends.
+
+🔹 **1. Basic scatterplot**
+
+Plot engine size vs highway mpg:
+
+```{r cars}
+students <- read_csv('../data/students.csv')
+students
+
+
+```
+
+```{r}
+students_clean <- students |> 
+  clean_names() |> 
+  mutate(ethnic_code = tolower(ethnic_code),
+         ethnic_code = case_when(
+           ethnic_code == 'hisp' ~ 'Hispanic', 
+           ethnic_code == 'hispanic' ~ 'Hispanic',
+           ethnic_code == 'white'~ 'White',
+           ethnic_code == 'asian' ~'Asian',
+           TRUE ~ ethnic_code
+         )) |> 
+  mutate(gender = tolower(gender),
+         gender = case_when(gender == 'female'~'Female',
+                           gender == 'male' ~ 'Male',
+                           gender == 'm' ~'Male',
+                           TRUE ~ gender)) |> 
+  mutate(school_name = case_when(school_name == 'lincoln elem' ~ 'Lincoln Elem',
+                                 TRUE ~ school_name))
+
+students_clean
+```
+
+```{r} #testing left_join function}
+
+hola <- data_frame(school_code = c(1,2),
+           schools = c('Lincoln Elem', 'Washington')) 
+
+hola
+
+combo <- students_clean |> 
+  left_join(hola, by = 'school_code')
+
+combo
+```
+
+```{r}
+glimpse(students_clean)
+head(students_clean)
+```
+
+```{r}
+avg_by_ethnicity <- students_clean |> 
+  group_by(ethnic_code) |> 
+  summarize(mean_test_score = mean(test_score, na.rm = TRUE))
+
+
+avg_by_ethnicity 
+```
+
+```{r}
+
+ggplot(data = avg_by_ethnicity, aes(x=ethnic_code, y = mean_test_score))+
+  geom_col()+
+  labs(title = 'Average Test Score by Ethnicity',x= 'Ethnicity', y='Average Score' ) +
+  theme_minimal()
+```
+
+```{r}
+students_clean
+```
+
+```{r}
+avg_attendance <- students_clean |>
+  group_by(school_name) |>
+  summarize(mean_attendance = mean(attendance_rate, na.rm = TRUE)) |> 
+  ggplot(aes(x=school_name, y = mean_attendance)) +
+  geom_col()+
+  labs(title = 'attendance v school name',x='Attendance Score', y = 'School Name') +
+  theme_minimal()
+
+avg_attendance
+  
+```
+
+```{r}
+
+ggplot(data = students_clean, aes(x = ethnic_code , y = test_score))+
+  geom_boxplot()+
+  labs(title = 'Test Scores by Ethnicity Dist.', x = 'Ethnicity', y= 'Test Scores') +
+  theme_minimal()
+```
+
+```{r}
+students_clean
+```
+
+```{r}
+ggplot(students_clean, aes(x = test_score, fill = gender)) +
+  geom_density(alpha = 0.3) +
+  labs(title = 'Distribution of Test Scores', x = 'Test Score', y = 'Density') +
+  theme_minimal()
+```
+
+```{r}
+ggplot(data = students_clean, aes(x = test_score, fill = gender))+
+  geom_density(alpha = 0.3) +
+   facet_wrap(~school_name)+
+  labs(title = "Distribution of Test Scores by School", x = 'Test Score', y = "Density")+
+  theme_minimal()
+  
+```
