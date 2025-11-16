@@ -1,0 +1,9 @@
+school_code,School Name,grade_cd,gender,ethn_cd,att_rate,test_score
+1,Lincoln Elem,3,F,HISP,0.95,78
+1,Lincoln Elem,3,M,Hisp,0.9,72
+1,Lincoln Elem,4,F,WHITE,0.97,85
+1,lincoln elem,4,M,Asian,0.98,88
+2,Washington,3,F,Hispanic,0.96,80
+2,Washington,5,M,WHITE,0.89,70
+2,Washington,5,F,ASIAN,0.99,92
+2,Washington,4,M,HISP,,75

@@ -1,0 +1,94 @@
+---
+title: "Interview_Practice_2"
+output: html_document
+date: "2025-11-16"
+---
+
+```{r}
+library(readr)
+library(tidyr)
+library(dplyr)
+library(lubridate)
+library(janitor)
+library(ggplot2)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+students_raw <- read_csv('../data/students_raw.csv')
+students_raw
+
+grade_codebook <- read_csv('../data/grade_codebook.csv')
+grade_codebook
+```
+
+```{r}
+students_raw_clean <- students_raw |> 
+  clean_names() |> 
+  mutate(school_name = case_when(school_name == 'lincoln elem' ~ 'Lincoln Elem',
+                                 TRUE ~ school_name)) |> 
+  mutate(ethn_cd = case_when(ethn_cd == 'HISP' ~ 'Hispanic',
+                             ethn_cd == 'Hisp' ~ 'Hispanic', 
+                             ethn_cd == 'ASIAN' ~ 'Asian',
+                             ethn_cd == 'WHITE' ~ 'White',
+                             TRUE ~ ethn_cd)) |> 
+  drop_na()
+  
+
+students_raw_clean
+```
+
+```{r}
+combo <-students_raw_clean |> 
+  left_join(grade_codebook, by = 'grade_cd')
+
+combo
+```
+
+Create a **bar chart** showing the **average attendance rate by grade** (using the grade label on the x-axis).
+
+```{r}
+attendance_grade <- combo |> 
+  group_by(grade_label) |> 
+  summarize(average_attend = mean(att_rate)) |> 
+  ggplot(aes(x = grade_label, y= average_attend)) +
+  geom_col()+
+  labs(title = 'Average Attendance Rate by Grade', x = 'Grade Level', y= 'Attendance Rate') +
+  theme_minimal()
+
+attendance_grade
+ 
+```
+
+Using the cleaned and joined student data, create a **line plot** showing the **average test score by grade**, using the *grade label* (e.g., Grade 3, Grade 4, Grade 5) on the x-axis.
+
+```{r}
+combo
+```
+
+```{r}
+line <- combo |>
+  group_by(grade_label) |> 
+  summarise(avg_score = mean(test_score)) |> 
+  ggplot(aes(x=grade_label, y = avg_score, group =1 )) +
+  geom_line()+
+  labs(title = 'Average Score per Grade Level') +
+  theme_minimal()
+
+line
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
