@@ -1,0 +1,66 @@
+---
+title: "Untitled"
+output: html_document
+date: "2025-11-17"
+---
+
+```{r}
+library(tidyverse)
+library(testthat)
+
+options(repr.plot.width = 9, repr.plot.height = 6)
+theme_set(theme_gray(base_size = 18))
+```
+
+## Question 1
+
+*Use the cars dataframe to create a scatter plot with Weight_in_lbs on the x-axis and Horsepower on the y-axis. Color the points by the Origin of the cars.*
+
+```{r}
+cars <- read_csv('../data/cars.csv')
+head(cars)
+```
+
+```{r}
+ggplot(data = cars, aes(x = Weight_in_lbs, y = Horsepower, color = Origin )) + 
+  geom_point() +
+  labs(x = 'Weight in Lbs', y = 'Horsepower') +
+  theme_minimal()
+```
+
+## 
+
+*Let’s use a line plot to visualize how the price of a few common stocks has changed over time. Create a line plot with the stocks’ date on the x-axis and their price on the y-axis. You should colour the lines by the stock symbol so that you can compare the stock development for the different companies.*
+
+```{r}
+stocks <- read_csv('../data/stocks.csv')
+glimpse(stocks)
+
+head(stocks)
+```
+
+```{r}
+ggplot(data = stocks, aes(x = date, y = price, color = symbol)) +
+  geom_line()+
+  labs(title = 'Stock Prices', x= 'Date', y = 'Prices')+
+  theme_minimal()
+```
+
+I have uploaded the 2018 Gapminder data at this URL and assign it a suitablevariable name. Use read_csv from readr to load the data directly from the URL.
+
+*Now let’s create a similar bubble chart to what you saw in the video: Filter the dataframe to only keep observations from a single year, 1962. You can create a new data frame variable or (preferably) perform the filtering directly and pipe it to ggplot. Dates can be matched as strings when filtering. Use a point geom to recreate the appearance of the plot in the video. Encode the proper variables so that children per woman is on the x-axis, life expectancy on the y-axis, and so that the circles’ color corresponds to their region, and the size reflects the population.*
+
+*Don't worry about getting axis labels and sizes to be exactly like in the video, we will return to this code later in the lab to customize it.*
+
+```{r}
+url <- 'https://raw.githubusercontent.com/UofTCoders/workshops-dc-py/master/data/processed/world-data-gapminder.csv'
+
+gap <- read_csv(url) |> 
+  filter(year == 1962) |> 
+  ggplot(aes(x = children_per_woman, y = life_expectancy, color = region, size = population)) +
+  geom_point()+
+  labs(x= 'Children per Woman', y= 'Life Expectancy')+
+  theme_minimal()
+
+gap
+```
