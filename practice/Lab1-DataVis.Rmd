@@ -247,3 +247,36 @@ chart
 # **Scatterplot of CO₂ vs GDP (income).**
 
 Plot CO2 per capita vs income and color by region.
+
+```{r}
+
+#here i am going to make a scatter plot of CO2 vs income group. As you can see, the higher the income group, the more CO2 they produce
+
+head(hello)
+
+income <- hello |> 
+  group_by(income_group, region) |> #here i group by income group and region
+  summarise(mean_co2 = mean(co2_per_capita, na.rm = TRUE)) #then i get the mean CO2 for each income group and region group
+
+income
+
+ggplot(data = income, aes(x = income_group, y = mean_co2, color = region))+
+  geom_point()+
+  labs(title = 'Scatterplot of CO2 vs GDP', x = 'Income Group', y = 'CO2 per Capita') +
+  theme_minimal()
+```
+
+# **Facet by region.**
+
+Create a scatterplot of life expectancy vs children per woman, faceted by region.
+
+```{r}
+
+#here i am creating a scatterplot of life expectancy vs childre per woman, faceted by region. As you can see, higher number of children show lower life expectancy  
+head(hello)
+
+ggplot(data = hello, aes(x = children_per_woman, y = life_expectancy))+
+  facet_wrap(~region) +
+  geom_point(alpha =0.1)+
+  theme_minimal()
+```
