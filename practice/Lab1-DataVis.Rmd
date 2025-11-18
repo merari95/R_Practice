@@ -64,3 +64,186 @@ gap <- read_csv(url) |>
 
 gap
 ```
+
+```{r}
+hello <- read_csv(url)
+head(hello)
+```
+
+```{r}
+
+
+hello<- read_csv(url)
+
+gap4 <- hello |> #here we are creating a new variable, gap4, which uses the dataset named hello
+  group_by(year) |> #we group the years, so all the same years get grouped together
+  summarise(avg_life = mean(life_expectancy, na.rm = TRUE)) |> #then we create a variable calleed avg_life, which is the mean of life_expectancy for the grouped years
+  ggplot(aes(x = year, y = avg_life)) + #then we commence the plotting, where x is the year and y is the  average life per grouped years
+  labs(title = 'Average Expectancy Over Time', x = 'Year', Y = 'Life Expectancy')+
+  geom_line()+
+  theme_minimal()
+
+gap4
+  
+```
+
+**Compare life expectancy across income groups.**
+
+```{r}
+head(hello)
+```
+
+```{r}
+life_income <- hello |> #using hello dataset |> 
+  ggplot(aes(x = income_group, y= life_expectancy))+ #you plot the box plot of life expectancy per income group
+  labs(title = ' Distribution of Life Expectancy per Income Group', x = 'Income Group', y = ' Life Expectancy') +
+  geom_boxplot()+
+  theme_minimal() #the middle line is the median life expectancy per income group, the outer rectanlges represent the 25th and 75th percentile, any dots outside are outliers
+
+life_income
+  
+```
+
+```{r}
+#here we are plotting the density plot per income group
+ggplot(data = hello, aes(x =life_expectancy, fill = income_group) ) +
+  geom_density(alpha = 0.3) +
+  labs(title = 'Distribution of Life Expectancy per Income Group' ) +
+  theme_minimal()
+```
+
+# **Plot children per woman over time by income group.**
+
+Create a multi-line plot showing how fertility (children per woman) has changed over time for each income group.
+
+```{r}
+head(hello)
+```
+
+```{r}
+fertility <- hello |> 
+  group_by(income_group, year) |> #you group the income groups and years that are the same
+  summarize(fertility_per_income = mean(children_per_woman)) |> # you get the mean fertility per income group and year
+  ggplot(aes(x = year, y = fertility_per_income, color = income_group)) +
+  labs(title = "Fertility Per Income Group") +
+  geom_line()+
+  theme_minimal()
+
+fertility 
+```
+
+#  **Scatterplot of life expectancy vs income.**
+
+Plot life expectancy versus income and color the points by region.
+
+```{r}
+head(hello)
+```
+
+```{r}
+#here i am making a scatterplot of life expectancy vs income, with the region being separated by color
+ggplot(data = hello, aes(x = income, y = life_expectancy, color = region))+
+  geom_point(alpha = 0.3)+
+  labs(title = 'Scatterplot of Life Expectancy vs Income')+
+  theme_minimal()
+```
+
+**Faceted density plot.**
+
+Plot the distribution of child mortality by region and facet by income group.
+
+```{r}
+head(hello)
+```
+
+```{r}
+#i am making a density plot of children mortality based on different regions, also i am facetting by income group so that each income group has their own distribution plots
+ggplot(data = hello, aes(x = child_mortality, fill = region))+
+  geom_density(alpha = 0.3) +
+  labs(title = 'Distribution of Child Mortality By Region') +
+  facet_wrap(~ income_group)+
+  theme_minimal()
+
+#Interpretation: for most income groups, there is a lot of mortality, for the high income group, there is an equal amount of low child mortality as high child mortality as shown by the two peaks. These two peaks also show up for lower middle and upper middle income groups. Africa seems to have one of the larger child mortality density in the low income group 
+```
+
+```{r}
+#i am making a boxplot to look at the children mortality per income group and facetted by regioin. Across all regions, high income groups have lower mortality distributions
+ggplot(data = hello, aes(x= income_group, y = child_mortality))+
+  geom_boxplot()+
+  facet_wrap(~region)+
+  theme_minimal()
+```
+
+# **Line plot of years in school (women vs men).**
+
+Plot average years in school for women and men over time.
+
+```{r}
+#here i am getting the line plot of years in school for women vs men. Men have higher average yers in school than women. 
+head(hello)
+w_m <- hello |> 
+  group_by(year) |> #group the data by year
+  summarize(avg_w = mean(years_in_school_women, na.rm = TRUE), #take the mean of school years grouped by year for women
+            avg_m = mean(years_in_school_men, na.rm = TRUE)) |> #take the mean of school years grouped by year for men
+  pivot_longer(cols = c(avg_w, avg_m),#pivot the data longer so that there is one column that distinguishes women from men
+               names_to = 'gender',
+               values_to = 'avg_school') |> 
+   ggplot(aes(x = year, y = avg_school, color = gender)) +
+           geom_line() +
+           labs(title = 'Average Years in School for Women and Men') +
+           theme_minimal()
+
+w_m
+```
+
+# **Ratio plot (like your assignment).**
+
+Plot the ratio of women’s to men’s education over time, grouped by income group.
+
+```{r}
+head(hello)
+```
+
+```{r}
+
+#here i am showing the change of women to men education ration over time, grouped by income group. As you can see, high income group has a higher women to men education ratio compared to all other groups. Low income has the loweest women to mend education ratio.
+
+ratio <- hello |> 
+  drop_na() |> #here i am dropping na caluse
+  mutate(ratio_w_m = years_in_school_women/years_in_school_men) |>  #i am calculating for the women to men education ratiox
+  group_by(income_group, year) |>   #i am grouping by income group and year
+  summarize(ratio_w_m = mean(ratio_w_m)) #i am getting the mean ratio of women to men per income group and year
+
+
+ggplot(ratio, aes(x = year, y =ratio_w_m, color = income_group ))+
+  geom_line()+
+  labs(title = 'Ratio Plot', x = 'Year', y = 'Ratio of Women to Mens Education')+
+  theme_minimal()
+  
+```
+
+# **Population trends by region.**
+
+Create a line chart showing population sizes over time for each region.
+
+```{r}
+head(hello)
+```
+
+```{r}
+#here i am plotting the population trends for each region per year. We can see that the population for Asia has always been the highest compared to all other regions and there was also a spike in growth in Asia in the 2000's
+chart <- hello |> 
+  group_by(year, region) |> #i group by year and region
+  summarise(mean_pop = mean(population)) |> #create the mean population per year and region
+  ggplot(aes(x = year, y = mean_pop, color = region)) + 
+  geom_line()+
+  labs(title = 'Population Trends by Region', x = 'Year', y = 'Population Size') +
+  theme_minimal() 
+
+chart 
+```
+
+# **Scatterplot of CO₂ vs GDP (income).**
+
+Plot CO2 per capita vs income and color by region.
